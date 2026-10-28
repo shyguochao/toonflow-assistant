@@ -1,0 +1,137 @@
+{
+  "toonflowCanvas": true,
+  "nodes": [
+    {
+      "id": "47fe9ad5-a03b-4c6e-ba73-37c1be9ccd3d",
+      "type": "remote-textNode",
+      "initialized": false,
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "label": "制作简报｜灯塔来信",
+        "handles": [
+          {
+            "id": "in",
+            "type": "target",
+            "dataType": [
+              "VIDEO",
+              "IMAGE",
+              "STRING",
+              "FILE"
+            ],
+            "label": "视频、图片、文本、文件输入"
+          },
+          {
+            "id": "text",
+            "type": "source",
+            "dataType": "STRING",
+            "label": "文本输出"
+          }
+        ],
+        "outputs": {},
+        "model": "[\"volcArk\",\"glm-5-3-flash-260828\"]",
+        "textPath": "assets/47fe9ad5-a03b-4c6e-ba73-37c1be9ccd3d/content.md",
+        "promptModel": [
+          [
+            {
+              "type": "Write",
+              "text": ""
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "36a99924-e4cf-403c-b964-19bde0dd022e",
+      "type": "remote-textNode",
+      "initialized": false,
+      "position": {
+        "x": 460,
+        "y": 0
+      },
+      "data": {
+        "label": "故事大纲｜灯塔来信",
+        "handles": [
+          {
+            "id": "in",
+            "type": "target",
+            "dataType": [
+              "VIDEO",
+              "IMAGE",
+              "STRING",
+              "FILE"
+            ],
+            "label": "视频、图片、文本、文件输入"
+          },
+          {
+            "id": "text",
+            "type": "source",
+            "dataType": "STRING",
+            "label": "文本输出"
+          }
+        ],
+        "outputs": {},
+        "model": "[\"volcArk\",\"glm-5-3-flash-260828\"]",
+        "textPath": "assets/36a99924-e4cf-403c-b964-19bde0dd022e/content.md",
+        "promptModel": [
+          [
+            {
+              "type": "Write",
+              "text": ""
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "8b161daf-6b48-485e-a510-3d489bec456d",
+      "type": "remote-textNode",
+      "initialized": false,
+      "position": {
+        "x": 0,
+        "y": 395
+      },
+      "data": {
+        "label": "第一集剧本｜灯塔来信 EP01",
+        "handles": [
+          {
+            "id": "in",
+            "type": "target",
+            "dataType": [
+              "VIDEO",
+              "IMAGE",
+              "STRING",
+              "FILE"
+            ],
+            "label": "视频、图片、文本、文件输入"
+          },
+          {
+            "id": "text",
+            "type": "source",
+            "dataType": "STRING",
+            "label": "文本输出"
+          }
+        ],
+        "outputs": {},
+        "model": "[\"volcArk\",\"glm-5-3-flash-260828\"]",
+        "textPath": "assets/8b161daf-6b48-485e-a510-3d489bec456d/content.md",
+        "promptModel": [
+          [
+            {
+              "type": "Write",
+              "text": ""
+            }
+          ]
+        ]
+      }
+    }
+  ],
+  "edges": [],
+  "viewport": {
+    "x": 405.2,
+    "y": -327,
+    "zoom": 1.22
+  }
+}

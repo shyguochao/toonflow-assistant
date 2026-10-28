@@ -1,0 +1,19 @@
+{
+  "name": "toonflow-assistant",
+  "version": "0.1.0",
+  "description": "Manage and optimize Toonflow-app workspace directories from the terminal.",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "tfa": "./src/cli.ts"
+  },
+  "scripts": {
+    "tfa": "bun run src/cli.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.14",
+    "typescript": "5.9.3"
+  }
+}
