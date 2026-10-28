@@ -6,14 +6,31 @@ Toonflow-app 工作目录的命令行管理与素材优化工具：体检、一�
 
 ## 安装
 
-需要 [Bun](https://bun.sh) ≥ 1.3。
+需要 [Bun](https://bun.sh) ≥ 1.3；使用 shuohao-skills 还需要 Node.js ≥ 18。
 
 ```sh
+git clone --recurse-submodules https://github.com/shyguochao/toonflow-assistant.git
 cd toonflow-assistant
+# 已经 clone 但没带 submodule 时：git submodule update --init
 bun install
 bun link            # 之后可直接使用 tfa；也可以用 bun run src/cli.ts 代替
 export TFA_WORKSPACE=/path/to/your-workspace   # 可选：省略每条命令里的工作目录
 ```
+
+### 第三方 Skill：shuohao-skills
+
+`vendor/shuohao-skills` 是 git submodule，指向 fork [shyguochao/shuohao-skills](https://github.com/shyguochao/shuohao-skills)（上游 [eternityspring/shuohao-skills](https://github.com/eternityspring/shuohao-skills)，Apache-2.0），锁定在提交 `5612d2a`。包含短剧制作 Skill：novel-outline、novel-characters、novel-art、novel-script、novel-staging、novel-storyboard、character-refs。
+
+升级到新的上游版本：
+
+```sh
+cd vendor/shuohao-skills
+git remote add upstream https://github.com/eternityspring/shuohao-skills.git   # 只需一次
+git fetch upstream && git merge --ff-only upstream/main && git push origin main  # 同步 fork
+cd ../.. && git add vendor/shuohao-skills && git commit -m "vendor: bump shuohao-skills"
+```
+
+不要直接修改 `vendor/` 下的文件；需要定制时在本仓库内另写规则，避免升级冲突。许可信息见 `NOTICE`。
 
 ## 命令
 

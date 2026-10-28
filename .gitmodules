@@ -1,0 +1,3 @@
+[submodule "vendor/shuohao-skills"]
+	path = vendor/shuohao-skills
+	url = https://github.com/shyguochao/shuohao-skills.git

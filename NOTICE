@@ -1,0 +1,15 @@
+toonflow-assistant
+Copyright 2026 shyguochao
+
+This repository includes third-party material:
+
+1. vendor/shuohao-skills (git submodule)
+   Source:    https://github.com/shyguochao/shuohao-skills (fork of https://github.com/eternityspring/shuohao-skills)
+   Pinned at: 5612d2a
+   License:   Apache License 2.0, Copyright 2026 烁皓 — see vendor/shuohao-skills/LICENSE and vendor/shuohao-skills/NOTICE
+   The files are used unmodified.
+
+2. src/standards/index.ts
+   Rules condensed from the skills bundled with HBAI-Ltd/Toonflow-app
+   (packages/skills/workflow, packages/skills/v118workflow).
+   License:   MIT, Copyright (c) 2026 HBAI-Ltd
