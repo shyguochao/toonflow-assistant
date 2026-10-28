@@ -16,6 +16,13 @@ const help = `toonflow-assistant (tfa) — 管理和优化 Toonflow 工作目录
   clean                 清理孤儿素材目录（默认预览，--apply 执行）
   export                导出文本节点为 Markdown（--format docx 需本机 pandoc）
   sessions              统计 Agent 会话
+  import                把 shuohao-skills 的 JSON 校验并渲染后写入文本节点（默认预览，--apply 执行）
+                        --from shuohao/<剧名>-<outline|cast|art|script|staging|storyboard|toonflow>.json
+                        （-toonflow.json 是 toonflow-canvas 的原生画布 bundle，合并进 画布/*.json）
+                        [--node <id|标签>] [--label 新节点标签]
+  setup-skills          把 vendor/shuohao-skills 链接到 Agent 的 skills 目录（默认预览，--apply 执行）
+                        [--target 目录] [--with character-refs]
+  doctor                检查 shuohao-skills 环境（submodule、node、链接）[--selftest]
   optimize              用火山方舟文本模型优化素材（默认预览，--apply 执行）
                         --node <id|标签关键字> --as outline|script|character|scene|storyboard|prompt
                         [--goal 补充要求] [--mode replace|new-node]
@@ -43,6 +50,11 @@ const { values, positionals } = parseArgs({
     mode: { type: "string" },
     "with-sessions": { type: "boolean" },
     history: { type: "boolean" },
+    from: { type: "string" },
+    label: { type: "string" },
+    target: { type: "string" },
+    with: { type: "string", multiple: true },
+    selftest: { type: "boolean" },
   },
 });
 
@@ -75,6 +87,9 @@ const commands: Record<string, () => Promise<number | void>> = {
   export: async () => (await import("./commands/export.ts")).run(workspaceArg(rest), values),
   sessions: async () => (await import("./commands/sessions.ts")).run(workspaceArg(rest), values),
   optimize: async () => (await import("./commands/optimize.ts")).run(workspaceArg(rest), values),
+  import: async () => (await import("./commands/import.ts")).run(workspaceArg(rest), values),
+  "setup-skills": async () => (await import("./commands/setupSkills.ts")).run(values),
+  doctor: async () => (await import("./commands/doctor.ts")).run(values),
 };
 
 const handler = commands[command];

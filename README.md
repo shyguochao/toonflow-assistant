@@ -19,7 +19,7 @@ export TFA_WORKSPACE=/path/to/your-workspace   # 可选：省略每条命令里�
 
 ### 第三方 Skill：shuohao-skills
 
-`vendor/shuohao-skills` 是 git submodule，指向 fork [shyguochao/shuohao-skills](https://github.com/shyguochao/shuohao-skills)（上游 [eternityspring/shuohao-skills](https://github.com/eternityspring/shuohao-skills)，Apache-2.0），锁定在提交 `5612d2a`。包含短剧制作 Skill：novel-outline、novel-characters、novel-art、novel-script、novel-staging、novel-storyboard、character-refs。
+`vendor/shuohao-skills` 是 git submodule，指向 fork [shyguochao/shuohao-skills](https://github.com/shyguochao/shuohao-skills)（上游 [eternityspring/shuohao-skills](https://github.com/eternityspring/shuohao-skills)，Apache-2.0），锁定在提交 `af54a67`。包含短剧制作 Skill：novel-outline、novel-characters、novel-art、novel-script、novel-staging、novel-storyboard、character-refs，以及本 fork 新增的 toonflow-canvas（把前面的产出转成 Toonflow 原生画布）。
 
 升级到新的上游版本：
 
@@ -30,7 +30,7 @@ git fetch upstream && git merge --ff-only upstream/main && git push origin main 
 cd ../.. && git add vendor/shuohao-skills && git commit -m "vendor: bump shuohao-skills"
 ```
 
-不要直接修改 `vendor/` 下的文件；需要定制时在本仓库内另写规则，避免升级冲突。许可信息见 `NOTICE`。
+不要直接修改 `vendor/` 下的文件：fork 的改动在 fork 仓库里提交、推送后再前移 submodule 指针，并同步 `src/shuohao/vendor.ts` 的 `pinnedCommit`。许可信息见 `NOTICE`。
 
 ## 命令
 
@@ -45,6 +45,9 @@ cd ../.. && git add vendor/shuohao-skills && git commit -m "vendor: bump shuohao
 | `tfa export [ws] [--out 目录] [--format md\|docx]` | 每个文本节点导出为 Markdown，并生成 `index.md`；`docx` 需本机 pandoc | 否 |
 | `tfa sessions [ws]` | Agent 会话轮次、工具调用、报错、模型、token | 否 |
 | `tfa optimize [ws] --node <ID\|标签> --as <类型> [--goal 要求] [--mode replace\|new-node] [--apply]` | 用火山方舟优化素材 | 是 |
+| `tfa import [ws] --from shuohao/<剧名>-<类型>.json [--node ID\|标签] [--label 标签] [--force] [--apply]` | 校验 shuohao 数据后写入：`-toonflow.json` 合并为原生画布，其余类型渲染成文本节点 | 是 |
+| `tfa setup-skills [--target 目录] [--with character-refs] [--apply]` | 把 vendor 里的 skill 链接到 Comate 项目级 skills 目录 | 是 |
+| `tfa doctor [--selftest]` | 检查 submodule、锁定版本、node、skill 链接 | 否 |
 
 所有命令支持 `--json` 输出。
 
@@ -69,6 +72,19 @@ cd ../.. && git add vendor/shuohao-skills && git commit -m "vendor: bump shuohao
 | `ARK_MODEL` | `glm-5-3-flash-260828` | 方舟控制台「开通管理」中的模型 ID |
 | `ARK_REASONING` | `high` | GLM-5.3-Flash 思考强度：`low` / `high` / `max` |
 | `ARK_BASE_URL` | `https://ark.cn-beijing.volces.com/api/v3` | 其他地域可覆盖；拒绝 `/api/plan` |
+
+## 在 Comate 对话中产出 Toonflow 原生画布
+
+1. 一次性准备：`tfa setup-skills --apply`，再 `tfa doctor` 全部 ✓；新开一个 Comate 会话，skill 列表里能看到 novel-* 与 toonflow-canvas。
+2. 在对话里让 novel-outline / novel-characters / novel-art / novel-script / novel-storyboard 生成或修改数据，文件放在 `<工作目录>/shuohao/<剧名>-<类型>.json`，每个 skill 自带的 validate 必须通过。
+3. 要转分镜时先导出 Seedance 投产包：`node <novel-storyboard>/scripts/novel-storyboard.mjs export <剧名>-storyboard.json --script <剧名>-script.json --protocol seedance --out seedance`。
+4. 让 toonflow-canvas 转换：`node <toonflow-canvas>/scripts/toonflow-canvas.mjs build shuohao [--seedance shuohao/seedance]`，产出 `shuohao/<剧名>-toonflow.json`。
+5. 停掉 Toonflow 后导入：`tfa import <工作目录> --from shuohao/<剧名>-toonflow.json` 预览，确认后加 `--apply`；`tfa lint` 无 error。
+6. 打开 Toonflow：`画布/剧本.json`（大纲与每集剧本）、`画布/资产.json`（角色/场景/道具图片生成节点）、`画布/分集/第NNN集.json`（每段视频生成节点，已连好参考图）。
+
+再次转换、导入时只更新托管字段（标签、提示词、正文、引用顺序、时长、比例），节点位置、模型、已生成的图片视频和你手动加的节点保持不变；资产出图后，分集画布的引用节点会自动指向同一张图。导入后在 APP 里改过的提示词或正文会被 `tfa lint` 标出，再次导入会拒绝覆盖，确认后加 `--force`。tfa 不会删除节点：bundle 里去掉的节点只提示，由你在 APP 里删除。
+
+不经过 toonflow-canvas 时，也可以把单个 JSON 渲染成文本节点：`tfa import --from shuohao/<剧名>-outline.json --node 故事大纲`。
 
 ## 安全策略
 
