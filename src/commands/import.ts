@@ -21,7 +21,7 @@ function freePosition(nodes: CanvasNode[]) {
 }
 
 export async function planImport(ws: Workspace, options: ImportOptions, run: NodeRunner = runNode): Promise<ChangePlan> {
-  if (!options.from) throw new Error("请用 --from 指定 shuohao JSON，例如 --from shuohao/收容回廊-outline.json");
+  if (!options.from) throw new Error("请用 --from 指定 shuohao JSON，例如 --from shuohao/灯塔来信-outline.json");
   const full = isAbsolute(options.from) ? options.from : join(ws.root, options.from);
   const file = toPosix(relative(ws.root, full));
   if (file.startsWith("..")) throw new Error(`--from 必须位于工作目录内（建议放在 ${ws.root}/shuohao/）`);

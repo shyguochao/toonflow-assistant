@@ -6,7 +6,7 @@ export const shuohaoDir = "shuohao";
 export const linksPath = `${shuohaoDir}/links.json`;
 
 export type LinkRecord = {
-  /** e.g. "shuohao/收容回廊-outline.json" */
+  /** e.g. "shuohao/灯塔来信-outline.json" */
   file: string;
   nodeId: string;
   canvas: string;

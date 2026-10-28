@@ -36,7 +36,7 @@ const hooks = (root: string) => ({
 });
 
 test("kind detection and companion arguments", () => {
-  expect(detectKind("收容回廊-outline.json")).toEqual({ kind: "outline", title: "收容回廊" });
+  expect(detectKind("灯塔来信-outline.json")).toEqual({ kind: "outline", title: "灯塔来信" });
   expect(detectKind("notes.json")).toBeUndefined();
   const sb = companionArgs(join(data, "渡口-storyboard.json"));
   expect(sb.args).toEqual(["--script", join(data, "渡口-script.json")]);
