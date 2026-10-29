@@ -42,7 +42,7 @@ cd ../.. && git add vendor/shuohao-skills && git commit -m "vendor: bump shuohao
 | `tfa snapshots [ws]` | 列出快照 | 否 |
 | `tfa restore [ws] <ID> [--apply]` | 回滚（回滚前会先给当前状态拍快照） | 是 |
 | `tfa clean [ws] [--apply]` | 删除没有节点引用的 `assets/<uuid>/` 目录 | 是 |
-| `tfa export [ws] [--out 目录] [--format md\|docx]` | 每个文本节点导出为 Markdown，并生成 `index.md`；`docx` 需本机 pandoc | 否 |
+| `tfa export [ws] [--out 目录] [--format md\|docx]` | 每个文本节点按画布分目录导出为 Markdown，并生成 `index.md`；默认写到 `exports/<工作目录名>/`，每次覆盖、只保留最新一次；`docx` 需本机 pandoc | 否 |
 | `tfa sessions [ws]` | Agent 会话轮次、工具调用、报错、模型、token | 否 |
 | `tfa optimize [ws] --node <ID\|标签> --as <类型> [--goal 要求] [--mode replace\|new-node] [--apply]` | 用火山方舟优化素材 | 是 |
 | `tfa import [ws] --from shuohao/<剧名>-<类型>.json [--node ID\|标签] [--label 标签] [--force] [--apply]` | 校验 shuohao 数据后写入：`-toonflow.json` 合并为原生画布，其余类型渲染成文本节点 | 是 |

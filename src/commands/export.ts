@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { CliOptions } from "../cli.ts";
 import { isTextNode, scanWorkspace } from "../workspace/scan.ts";
@@ -44,8 +44,9 @@ export async function exportMarkdown(ws: Workspace, outDir: string) {
 
 export async function run(root: string, options: CliOptions) {
   const ws = await scanWorkspace(root);
-  const stampText = new Date().toISOString().replace(/[:.]/g, "-");
-  const outDir = options.out ?? join(assistantHome(), "exports", ws.name, stampText);
+  // Default target holds only the latest export: the previous one is replaced. A user-given --out is never wiped.
+  const outDir = options.out ?? join(assistantHome(), "exports", ws.name);
+  if (!options.out) await rm(outDir, { recursive: true, force: true });
   const files = await exportMarkdown(ws, outDir);
   console.log(`已导出 ${files.length} 个文件到 ${outDir}`);
 
