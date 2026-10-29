@@ -23,12 +23,16 @@ export async function exportMarkdown(ws: Workspace, outDir: string) {
   const written: string[] = [];
   for (const { canvas, node, text } of orderedTextNodes(ws)) {
     if (!text?.exists) continue;
-    let name = safeName(node.data.label ?? node.id);
-    for (let i = 2; used.has(name); i++) name = `${safeName(node.data.label ?? node.id)}-${i}`;
-    used.add(name);
-    await writeFile(join(outDir, `${name}.md`), text.text);
-    written.push(`${name}.md`);
-    rows.push([`[${node.data.label ?? node.id}](${encodeURI(`${name}.md`)})`, canvas, String(charCount(text.text)), node.id]);
+    // One folder per canvas (画布/剧本.json → 画布/剧本/), so same-named nodes on different canvases don't collide.
+    const dir = canvas.replace(/\.json$/i, "").split("/").map(safeName).join("/");
+    const base = safeName(node.data.label ?? node.id);
+    let file = `${dir}/${base}.md`;
+    for (let i = 2; used.has(file); i++) file = `${dir}/${base}-${i}.md`;
+    used.add(file);
+    await mkdir(join(outDir, dir), { recursive: true });
+    await writeFile(join(outDir, file), text.text);
+    written.push(file);
+    rows.push([`[${node.data.label ?? node.id}](${encodeURI(file)})`, canvas, String(charCount(text.text)), node.id]);
   }
   const index = [
     `# ${ws.name} 导出`, "", `导出时间：${new Date().toLocaleString("zh-CN")}`, "",

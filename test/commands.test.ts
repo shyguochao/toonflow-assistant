@@ -48,8 +48,8 @@ test("clean refuses when a canvas is unparseable", async () => {
 test("export writes one markdown per text node plus index", async () => {
   const out = join(home, "out");
   const files = await exportMarkdown(await scanWorkspace(fixture), out);
-  expect(files).toEqual(["制作简报｜灯塔来信.md", "故事大纲｜灯塔来信.md", "第一集剧本｜灯塔来信 EP01.md", "index.md"]);
-  expect((await readdir(out)).length).toBe(4);
+  expect(files).toEqual(["画布1/制作简报｜灯塔来信.md", "画布1/故事大纲｜灯塔来信.md", "画布1/第一集剧本｜灯塔来信 EP01.md", "index.md"]);
+  expect((await readdir(join(out, "画布1"))).length).toBe(3);
   expect(await readFile(join(out, "index.md"), "utf8")).toContain("故事大纲");
 });
 
